@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light} body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+<title>GM1 Linkdatenbank</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="author" content="Marilena Tumler, MEd MA">
+<!-- GM1 Linkdatenbank · Konzept, Auswahl und Texte: Marilena Tumler, MEd MA · © 2026 Marilena Tumler -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  /* Layout: redaktionelle Indexseite. Kopf mit feinem Raster, links der Titel in Versalien,
+     rechts die Filterfelder als umrandete Rechtecke; darunter die Einträge in Spalten mit Haarlinien. */
+  :root{
+    --paper:#f3f2ee; --ink:#161615; --muted:#6a6963; --rule:#d6d4cc; --grid:rgba(22,22,21,.07);
+    --field:#f8f7f4; --mark:#a3271f;
+    --display:"Bodoni Moda","Didot","Bodoni MT","Times New Roman",serif;
+    --text:"Source Serif 4","Iowan Old Style","Georgia",serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#141413; --ink:#ecebe6; --muted:#a09e96; --rule:#35342f; --grid:rgba(236,235,230,.07);
+      --field:#1b1b19; --mark:#e8756b; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#141413; --ink:#ecebe6; --muted:#a09e96; --rule:#35342f; --grid:rgba(236,235,230,.07);
+    --field:#1b1b19; --mark:#e8756b; color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.5;margin:0}
+  a{color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+
+  /* Kopf */
+  .top{border-bottom:1px solid var(--rule)}
+  .top .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 28px;padding-block:18px}
+  .mark{font-family:var(--display);font-size:1.25rem;letter-spacing:.01em}
+  .top nav{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.84rem}
+  .top nav a{text-decoration:none;color:var(--muted)}
+  .top nav a:hover,.top nav a:focus-visible{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+
+  .hero{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+        background-size:26px 26px;border-bottom:1px solid var(--rule)}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:40px 56px;padding-block:64px 52px;align-items:start}
+  .shortrule{width:64px;height:1px;background:var(--ink);margin-bottom:26px}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,6.2vw,4.3rem);line-height:1.02;letter-spacing:.035em;
+     text-transform:uppercase;margin:0;text-wrap:balance;overflow-wrap:anywhere}
+  .sub{font-family:var(--display);font-size:clamp(1.2rem,2.4vw,1.7rem);margin:14px 0 0}
+  .intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px 30px;margin-top:38px;font-size:.92rem;color:var(--ink)}
+  .intro p{margin:0;min-width:0}
+
+  /* Filter */
+  form.filter{display:grid;gap:14px;background:var(--paper);border:1px solid var(--ink);padding:20px}
+  .filter label{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+  .filter input[type=search],.filter select{width:100%;font:inherit;font-size:.95rem;color:var(--ink);background:var(--field);
+     border:1px solid var(--ink);border-radius:0;padding:9px 10px;appearance:none;-webkit-appearance:none}
+  .filter select{background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
+     background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+  .check{display:flex;align-items:center;gap:10px;font-size:.92rem}
+  .check input{width:17px;height:17px;accent-color:var(--ink);margin:0}
+  .check label{margin:0;font-size:.92rem;letter-spacing:0;text-transform:none;color:var(--ink)}
+  .count{font-size:.86rem;color:var(--muted);font-variant-numeric:tabular-nums;border-top:1px solid var(--rule);padding-top:12px}
+  button.btn,a.btn{display:inline-block;font:inherit;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+     color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:0;padding:8px 13px;cursor:pointer}
+  button.btn:hover,a.btn:hover{background:var(--ink);color:var(--paper)}
+  :focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+
+  /* Liste */
+  main .wrap{padding-block:18px 70px}
+  section.gruppe{padding-top:46px}
+  .ghead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px;margin-bottom:6px}
+  h2{font-family:var(--display);font-weight:400;font-size:1.75rem;margin:0;text-wrap:balance}
+  .gcount{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+  .glead{margin:0 0 20px;color:var(--muted);font-size:.95rem;max-width:62ch}
+  .entries{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:0 44px}
+  article{border-top:1px solid var(--rule);padding:18px 0 24px;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .meta{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .meta .neu{color:var(--mark)}
+  h3{font-family:var(--display);font-weight:500;font-size:1.22rem;line-height:1.22;margin:0;overflow-wrap:anywhere}
+  .von{font-size:.88rem;color:var(--muted);margin:0}
+  .txt{font-size:.96rem;margin:0}
+  .links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:6px}
+  .ilias{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--muted);padding:7px 10px}
+  .leer{border-top:1px solid var(--rule);margin-top:46px;padding:38px 0;display:grid;gap:14px;justify-items:start}
+  .leer p{margin:0;font-family:var(--display);font-size:1.4rem}
+  .autorin{font-size:.86rem;letter-spacing:.06em;color:var(--muted);margin:.5rem 0 0}
+  .autorin b{font-weight:600;color:var(--ink)}
+  footer{border-top:1px solid var(--rule)}
+  footer .wrap{padding-block:26px 36px;font-size:.84rem;color:var(--muted);display:grid;gap:6px}
+  footer p{margin:0;max-width:78ch}
+  @media (max-width:820px){
+    .hero .wrap{grid-template-columns:minmax(0,1fr);padding-block:44px 36px}
+    body{font-size:16px}
+  }
+  @media (prefers-reduced-motion:no-preference){ a.btn,button.btn{transition:background .15s,color .15s} }
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <div class="mark">Global Mindedness I</div>
+    <nav aria-label="Themen">
+      <a href="#bias">Bias</a>
+      <a href="#intersektionalitaet">Intersektionalität</a>
+      <a href="#ethik">Ethik</a>
+      <a href="#kluft">Digitale Kluft</a>
+      <a href="#gestaltung">Gestaltung</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="shortrule"></div>
+      <h1>Linkdatenbank</h1>
+      <p class="sub">Lesen, Hören, Schauen, Ausprobieren</p>
+      <p class="autorin">Konzept, Auswahl und Texte: <b>Marilena Tumler, MEd MA</b></p>
+      <div class="intro">
+        <p>Hier liegt alles, womit wir in Global Mindedness I arbeiten: Texte, Podcasts, Videos und zwei Dinge zum Selbermachen. Wintersemester 2026/27, Design &amp; Creative Leadership.</p>
+        <p>Für die asynchrone Einheit wählt ihr einen Text und ein Audio oder Video. Mit dem Filter könnt ihr nach Art und Thema eingrenzen oder nach einem Namen suchen.</p>
+        <p>Was mit „Neu 2026“ markiert ist, kam dieses Jahr dazu. Geschützte Texte liegen als PDF auf Ilias, alles andere öffnet sich direkt.</p>
+      </div>
+    </div>
+    <form class="filter" id="filter" autocomplete="off">
+      <div><label for="q">Suche</label><input type="search" id="q" placeholder="Name, Titel, Stichwort"></div>
+      <div><label for="art">Art</label><select id="art"><option value="">Alle Arten</option><option>Lesen</option><option>Hören</option><option>Schauen</option><option>Ausprobieren</option></select></div>
+      <div><label for="thema">Thema</label><select id="thema"><option value="">Alle Themen</option></select></div>
+      <div class="check"><input type="checkbox" id="neu"><label for="neu">Nur Neu 2026</label></div>
+      <div class="count" id="count" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<main><div class="wrap" id="liste"></div></main>
+
+<footer><div class="wrap">
+  <p>Stand 19. November 2026. Konzept, Auswahl und Texte: Marilena Tumler, MEd MA, für Global Mindedness I an der FHV.</p>
+  <p>© 2026 Marilena Tumler. Weitergabe und Verwendung nur mit Namensnennung, keine Veröffentlichung unter anderem Namen.</p>
+  <p>Ein Video ist hier nur beschrieben, der Link dazu steht im Ilias-Kurs. Fällt ein Link aus, sagt bitte Bescheid.</p>
+</div></footer>
+
+<script>
+const THEMEN = [
+  {id:"bias", name:"Bias & Algorithmen", lead:"Wie Systeme, die neutral auftreten, bestehende Ungleichheit übernehmen und verstärken."},
+  {id:"intersektionalitaet", name:"Intersektionalität & Gerechtigkeit", lead:"Wie Benachteiligungen zusammenwirken und was ein gerechtes Leben braucht."},
+  {id:"ethik", name:"Ethik & Maschinen", lead:"Begriffe, Dilemmata und Regeln für den Umgang mit künstlichen Systemen."},
+  {id:"kluft", name:"Digitale Kluft", lead:"Wer Zugang hat, wer damit umgehen kann und wer davon profitiert."},
+  {id:"gestaltung", name:"Gestaltung & Arbeit", lead:"Was das alles für Design und für die Art zu arbeiten heißt."}
+];
+const E = [
+ // ---------------------------------------------------------------- Bias & Algorithmen
+ {th:"bias", art:"Hören", titel:"Automating Inequality: Podcast mit Virginia Eubanks", von:"UAlbany News Podcast", jahr:"2019", spr:"Englisch", dauer:"20 Min.",
+  txt:"Eubanks erklärt, wie automatisierte Systeme in Sozialhilfe, Wohnungsvergabe und Kinderschutz arme Menschen erfassen, überwachen und bestrafen. Der kürzeste Einstieg in ihr Buch.",
+  links:[["Zur Folge","https://www.albany.edu/news-center/news/2019-podcast-automating-inequality-virginia-eubanks"]]},
+ {th:"bias", art:"Schauen", neu:true, titel:"Virginia Eubanks: Automating Inequality", von:"Vortrag an der Ford School, University of Michigan", jahr:"2018", spr:"Englisch", dauer:"60 Min.",
+  txt:"Die Thesen des Buchs in einer Stunde, mit den Fallstudien, die auch in der Lehrveranstaltung vorkommen. Eine Alternative zum Lesen.",
+  links:[["Zum Video","https://fordschool.umich.edu/video/2018/virginia-eubanks-automating-inequality"]]},
+ {th:"bias", art:"Lesen", titel:"Der AMS-Algorithmus. Eine soziotechnische Analyse des Arbeitsmarktchancen-Assistenz-Systems", von:"Allhutter, Mager, Cech, Fischer & Grill, Institut für Technikfolgen-Abschätzung", jahr:"2020", spr:"Deutsch", ilias:"PDF auf Ilias",
+  txt:"Die große österreichische Studie zu dem Algorithmus, der Arbeitssuchende in drei Gruppen einteilt. Sie zeigt, wie Geschlecht, Alter und Betreuungspflichten in die Berechnung einfließen.",
+  links:[["Projektseite","https://www.oeaw.ac.at/en/ita/projects/ams-algorithm"]]},
+ {th:"bias", art:"Lesen", titel:"Assessing risk, automating racism", von:"Ruha Benjamin, Science 366(6464)", jahr:"2019", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Zwei Seiten über einen Algorithmus im US-Gesundheitswesen, der Schwarze Patient:innen als weniger behandlungsbedürftig einstufte. Ein Lehrstück darüber, was eine scheinbar neutrale Kennzahl anrichten kann.",
+  links:[["Zum Artikel","https://doi.org/10.1126/science.aaz3873"]]},
+ {th:"bias", art:"Schauen", titel:"Ruha Benjamin: Racial Bias in Technology", von:"Keynote, San Francisco State University", jahr:"", spr:"Englisch",
+  txt:"Benjamin über den New Jim Code: Technik, die objektiv wirkt und alte Ungleichheit in neue Systeme schreibt.", links:[["Zum Video","https://www.youtube.com/watch?v=Bn6a4kB1ZIM"]]},
+ {th:"bias", art:"Lesen", neu:true, titel:"Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification", von:"Joy Buolamwini & Timnit Gebru, Proceedings of Machine Learning Research 81", jahr:"2018", spr:"Englisch",
+  txt:"Kommerzielle Gesichtsanalyse irrt sich bei dunkelhäutigen Frauen in bis zu 34,7 Prozent der Fälle, bei hellhäutigen Männern in höchstens 0,8 Prozent. Der Fehler zeigt sich erst, wenn man Geschlecht und Hautton zusammen betrachtet.",
+  links:[["Zum Paper","https://proceedings.mlr.press/v81/buolamwini18a.html"]]},
+ {th:"bias", art:"Lesen", neu:true, titel:"Racial disparities in automated speech recognition", von:"Allison Koenecke u. a., PNAS 117(14)", jahr:"2020", spr:"Englisch",
+  txt:"Fünf Spracherkennungssysteme großer Anbieter verstehen Schwarze Sprecher:innen deutlich schlechter als weiße: 35 gegenüber 19 falsch erkannte Wörter von 100.",
+  links:[["Zum Artikel","https://doi.org/10.1073/pnas.1915768117"]]},
+ {th:"bias", art:"Schauen", neu:true, titel:"Ruha Benjamin bei TED", von:"Übersicht ihrer Vorträge", jahr:"", spr:"Englisch",
+  txt:"Kürzere Vorträge zu denselben Fragen. Gut, wenn die Keynote zu lang ist.",
+  links:[["Zur Übersicht","https://www.ted.com/speakers/ruha_benjamin"]]},
+ {th:"bias", art:"Lesen", titel:"Dilemmas in a General Theory of Planning", von:"Horst Rittel & Melvin Webber, Policy Sciences 4(2)", jahr:"1973", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Der Ursprung des Begriffs der wicked problems. Soziale Probleme haben keine endgültige Lösung, nur bessere oder schlechtere Antworten. Darum lassen sie sich nicht einfach berechnen.",
+  links:[["Zum Artikel","https://doi.org/10.1007/BF01405730"]]},
+ {th:"bias", art:"Ausprobieren", titel:"White Collar Crime Risk Zones", von:"Brian Clifton, Sam Lavigne & Francis Tseng, The New Inquiry", jahr:"2017", spr:"Englisch",
+  txt:"Ein Kunstprojekt dreht Predictive Policing um. Die Karte sagt vorher, wo Wirtschaftskriminalität passieren wird, und errechnet dazu das Durchschnittsgesicht der Täter.",
+  links:[["Zur Karte","https://whitecollar.thenewinquiry.com/"]]},
+ {th:"bias", art:"Lesen", titel:"Predicting Financial Crime: Augmenting the Predictive Policing Arsenal", von:"Brian Clifton, Sam Lavigne & Francis Tseng", jahr:"2017", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Das Begleitpapier zur Karte, geschrieben im Ton einer echten Studie. Lesenswert als Parodie und als Methodenkritik.",
+  links:[["Zum Papier","https://whitecollar.thenewinquiry.com/assets/whitepaper.pdf"]]},
+ {th:"bias", art:"Lesen", neu:true, titel:"Unmasking LAION-5B: Age, Gender, Race, and Emotion Biases in Large-Scale Image Datasets", von:"Iris Dominguez-Catena, Daniel Paternain & Mikel Galar", jahr:"2026", spr:"Englisch",
+  txt:"Untersucht den Datensatz, mit dem Bildgeneratoren trainiert wurden. Zu viele junge Erwachsene, Weiße und Männer, Gefühle stereotyp verteilt. Der Bias steckt schon im Material, und in dem Material stecken auch Portfolios.",
+  links:[["Zum Papier","https://arxiv.org/abs/2606.23204"]]},
+ {th:"bias", art:"Lesen", neu:true, titel:"Challenging systematic prejudices: Bias against women and girls in large language models", von:"UNESCO", jahr:"2024", spr:"Englisch",
+  txt:"Sprachmodelle beschreiben Frauen viermal häufiger in häuslichen Rollen als Männer. Ein kurzer Bericht mit klaren Befunden.",
+  links:[["Zum Bericht","https://unesdoc.unesco.org/ark:/48223/pf0000388971"]]},
+ {th:"bias", art:"Lesen", neu:true, titel:"Algorithmic bias in image-generating AI: prevalence and user perceptions", von:"Information, Communication & Society", jahr:"2025", spr:"Englisch",
+  txt:"Wie Bildgeneratoren Berufe darstellen. Der Frauenanteil in den Bildern liegt deutlich unter dem der Wirklichkeit. Eine gute Vergleichsbasis für eigene Experimente.",
+  links:[["Zum Artikel","https://www.tandfonline.com/doi/full/10.1080/1369118X.2025.2584146"]]},
+ {th:"bias", art:"Lesen", neu:true, titel:"Gender and racial bias unveiled: clinical AI/ML algorithms are fanning the flames of inequity", von:"Oxford Open Digital Health", jahr:"2025", spr:"Englisch",
+  txt:"Überblick darüber, wie KI in der Medizin Symptome von Frauen und Minderheiten schwächer gewichtet. Frei zugänglich.",
+  links:[["Zum Artikel","https://academic.oup.com/oodh/article/doi/10.1093/oodh/oqaf027/8279897"]]},
+ {th:"bias", art:"Hören", neu:true, titel:"KI verstehen", von:"Deutschlandfunk, wöchentlicher Podcast", jahr:"laufend", spr:"Deutsch",
+  txt:"Verlässliche Folgen zu Bias, Regulierung und Alltag mit KI. Sucht euch eine aktuelle Folge, die zu eurem Text passt.",
+  links:[["Zum Podcast","https://podcasts.apple.com/de/podcast/ki-verstehen/id1697851853"]]},
+
+ // ---------------------------------------------------------------- Intersektionalität & Gerechtigkeit
+ {th:"intersektionalitaet", art:"Schauen", titel:"Sternstunde Philosophie: Wie würde eine Welt ohne Unterdrückung aussehen, Emilia Roig?", von:"SRF Kultur", jahr:"", spr:"Deutsch",
+  txt:"Roig erklärt, wie Rassismus, Sexismus und Klassismus zusammenwirken und warum Privilegien für jene unsichtbar bleiben, die sie haben.", links:[["Zum Video","https://www.youtube.com/watch?v=WzMGmIhynrI"]]},
+ {th:"intersektionalitaet", art:"Hören", neu:true, titel:"Jung & Naiv, Folge 559: Emilia Roig", von:"Jung & Naiv", jahr:"", spr:"Deutsch",
+  txt:"Ein langes Gespräch über Intersektionalität, Diskriminierung und Patriarchat. Mehr Raum für Nachfragen als in der Sternstunde.",
+  links:[["Zur Folge","https://deutschepodcasts.de/podcast/jung-naiv/-559-emilia-roig-uber-intersektionalitat-diskrimin"]]},
+ {th:"intersektionalitaet", art:"Hören", neu:true, titel:"Emilia Roig: Können wir den Kapitalismus überwinden?", von:"Heute in 5 Jahren, der Zukunftspodcast", jahr:"2025", spr:"Deutsch",
+  txt:"Roigs jüngste Position. Was nach der Lohnarbeit kommen könnte und welche Chancen in Krisen liegen.",
+  links:[["Zur Folge","https://shows.acast.com/heutein5jahren-derzukunftspodcast/episodes/emilia-roig-konnen-wir-den-kapitalismus-uberwinden"]]},
+ {th:"intersektionalitaet", art:"Schauen", titel:"Intersektionalität: Erfolgskonzept gegen Diskriminierung?", von:"ARTE, Vox Pop", jahr:"", spr:"Deutsch",
+  txt:"Ein kurzer Beitrag, der den Begriff einführt und Für und Wider abwägt.", links:[["Zum Video","https://youtu.be/8URvROd31Yg"]]},
+ {th:"intersektionalitaet", art:"Lesen", titel:"Feminist Perspectives on a Planetary Ethic", von:"Kimberly Hutchings, in: The Globalization of Ethics", jahr:"2007", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Wie feministische Ethik über globale Gerechtigkeit nachdenkt. Fürsorge, Gerechtigkeit und postkoloniale Kritik im Vergleich.", links:[]},
+ {th:"intersektionalitaet", art:"Lesen", titel:"Sex and Social Justice", von:"Martha Nussbaum", jahr:"1999", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Nussbaums Fähigkeitenansatz, angewendet auf Geschlechtergerechtigkeit. Was muss ein Mensch tun und sein können, um ein würdiges Leben zu führen?", links:[]},
+ {th:"intersektionalitaet", art:"Schauen", titel:"Sternstunde Philosophie: Martha Nussbaum", von:"SRF", jahr:"", spr:"Deutsch", ilias:"Link auf Ilias",
+  txt:"Nussbaum über Gefühle in der Politik und darüber, warum Demokratien ohne sie nicht auskommen.", links:[]},
+ {th:"intersektionalitaet", art:"Lesen", neu:true, titel:"Data Grab: Gespräch mit Nick Couldry und Ulises Mejias", von:"LSE Media Blog", jahr:"2024", spr:"Englisch",
+  txt:"Datenextraktion als neue Kolonialordnung. Das Interview ist der leichte Einstieg in ihr Buch und verbindet Eubanks mit postkolonialer Kritik.",
+  links:[["Zum Interview","https://blogs.lse.ac.uk/medialse/2024/05/02/data-grab-an-interview-with-nick-couldry-and-ulises-a-mejias-on-their-new-book/"]]},
+
+ // ---------------------------------------------------------------- Ethik & Maschinen
+ {th:"ethik", art:"Lesen", titel:"Maschinenethik und Roboterethik", von:"Janina Loh, in: Handbuch Maschinenethik", jahr:"2019", spr:"Deutsch", ilias:"PDF auf Ilias",
+  txt:"Begriffsarbeit. Können Maschinen moralisch handeln, und wem gegenüber haben wir Pflichten? Vor den Sprachmodellen geschrieben und als Fundament weiter tragfähig.",
+  links:[["Zum Handbuch","https://doi.org/10.1007/978-3-658-17483-5"]]},
+ {th:"ethik", art:"Lesen", titel:"Maschinenethik und Künstliche Intelligenz", von:"Leonie Seng, in: Handbuch Maschinenethik", jahr:"2019", spr:"Deutsch", ilias:"PDF auf Ilias",
+  txt:"Was schwache und starke KI unterscheidet und welche ethischen Fragen daraus folgen. Lest es mit der Frage, was sich seit 2022 verändert hat.",
+  links:[["Zum Handbuch","https://doi.org/10.1007/978-3-658-17483-5"]]},
+ {th:"ethik", art:"Lesen", titel:"Autonomes Fahren aus Sicht der Maschinenethik", von:"Claudia Brändle & Armin Grunwald, in: Handbuch Maschinenethik", jahr:"2019", spr:"Deutsch", ilias:"PDF auf Ilias",
+  txt:"Dilemma-Situationen im Straßenverkehr. Wie soll ein Fahrzeug entscheiden, und wer verantwortet die Entscheidung?",
+  links:[["Zum Handbuch","https://doi.org/10.1007/978-3-658-17483-5"]]},
+ {th:"ethik", art:"Lesen", neu:true, titel:"KI muss sich zu erkennen geben", von:"Europäische Kommission, AI Act Artikel 50", jahr:"2026", spr:"Englisch",
+  txt:"Seit 2. August 2026 müssen sich Chatbots als KI ausweisen, Deepfakes und KI-erzeugte Inhalte müssen gekennzeichnet sein. Die Mitteilung zum Start der Durchsetzung und der Zeitplan dahinter.",
+  links:[["Mitteilung der Kommission","https://digital-strategy.ec.europa.eu/en/news/commission-starts-enforcing-ai-act-rules-and-new-transparency-requirements-2-august"],["Zeitplan des AI Act","https://artificialintelligenceact.eu/implementation-timeline/"]]},
+ {th:"ethik", art:"Hören", neu:true, titel:"Die verlogene Warnung der Tech-Götter vor ihrer Killer-KI", von:"Thema des Tages, DER STANDARD, mit Philipp Klöckner", jahr:"2026", spr:"Deutsch",
+  txt:"Die Woche, in der Sam Altman und Dario Amodei vor dem UN-Sicherheitsrat vor ihrer eigenen Technologie warnten. Bewusst zugespitzt. Hört es zusammen mit Amodeis Essay.",
+  links:[["Zur Folge","https://www.derstandard.at/story/3000000340789/die-verlogene-warnung-der-tech-goetter-vor-ihrer-killer-ki"]]},
+ {th:"ethik", art:"Lesen", neu:true, titel:"We Must Pace the Frontier", von:"Dario Amodei", jahr:"2026", spr:"Englisch",
+  txt:"Der Essay, um den sich die Debatte dreht. Der Chef eines KI-Unternehmens fordert, das Tempo zu drosseln. Die Gegenlektüre zur Podcast-Folge.",
+  links:[["Zum Essay","https://darioamodei.com/post/we-must-pace-the-frontier"]]},
+
+ // ---------------------------------------------------------------- Digitale Kluft
+ {th:"kluft", art:"Lesen", titel:"DigComp: Digital Competence Framework for Citizens", von:"Europäische Kommission, Joint Research Centre", jahr:"aktuell 3.0", spr:"Englisch",
+  txt:"Der europäische Referenzrahmen für digitale Kompetenz. Gut, um die eigenen Fähigkeiten einzuordnen.",
+  links:[["Zum Rahmen","https://joint-research-centre.ec.europa.eu/digcomp_en"]]},
+ {th:"kluft", art:"Lesen", titel:"Investigating Algorithmic Misconceptions in a Media Context: Source of a New Digital Divide?", von:"Brahim Zarouali, Natali Helberger & Claes de Vreese, Media and Communication 9(4)", jahr:"2021", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Befragung von 2.106 Menschen in den Niederlanden. Viele haben falsche Vorstellungen davon, was Algorithmen tun, besonders wer keine eigenen Informationsquellen hat. Frei zugänglich.",
+  links:[["Zum Artikel","https://doi.org/10.17645/mac.v9i4.4090"]]},
+ {th:"kluft", art:"Lesen", neu:true, titel:"How Early Adopters Used Generative AI Worldwide", von:"Madeleine Daepp & Isaac Slaughter", jahr:"2026", spr:"Englisch",
+  txt:"Wer nutzt KI-Chatbots wofür? Ausgewertet nach Landeseinkommen und Sprache. Lernen für die Schule ist fast überall der häufigste Zweck, am stärksten in ärmeren Ländern.",
+  links:[["Zum Papier","https://arxiv.org/abs/2605.30685"]]},
+ {th:"kluft", art:"Lesen", neu:true, titel:"The intensified digital divide: Comprehending GenAI", von:"Internet Policy Review", jahr:"", spr:"Englisch",
+  txt:"Kurzer Beitrag dazu, wie generative KI die bekannte digitale Kluft verschärft. Drei Stufen: Zugang, Kompetenz, Nutzen.",
+  links:[["Zum Beitrag","https://policyreview.info/articles/news/intensified-digital-divide-comprehending-genai/1772"]]},
+
+ // ---------------------------------------------------------------- Gestaltung & Arbeit
+ {th:"gestaltung", art:"Lesen", titel:"All that You Touch, You Change: Expanding the Canon of Speculative Design Towards Black Futuring", von:"Christina Harrington, Shamika Klassen & Yolanda Rankin, CHI 2022", jahr:"2022", spr:"Englisch", ilias:"PDF auf Ilias",
+  txt:"Speculative Design hat Schwarze Perspektiven lange übergangen. Der Text zeigt, was Afrofuturismus der Disziplin geben kann.",
+  links:[["Zum Artikel","https://doi.org/10.1145/3491102.3502118"]]},
+ {th:"gestaltung", art:"Lesen", titel:"Neue Narrative", von:"Magazin für neues Arbeiten", jahr:"", spr:"Deutsch", ilias:"PDF auf Ilias",
+  txt:"Praxisberichte, Werkzeuge und Fragen zu Führung und Zusammenarbeit. Wir greifen im Leadership-Teil darauf zurück.",
+  links:[["Zum Magazin","https://www.neuenarrative.de/"]]}
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+THEMEN.forEach(t => { const o = document.createElement("option"); o.value = t.id; o.textContent = t.name; $("thema").appendChild(o); });
+
+function passt(e){
+  const q = $("q").value.trim().toLowerCase(), a = $("art").value, t = $("thema").value, n = $("neu").checked;
+  if (a && e.art !== a) return false;
+  if (t && e.th !== t) return false;
+  if (n && !e.neu) return false;
+  if (q && !(e.titel + " " + e.von + " " + e.txt).toLowerCase().includes(q)) return false;
+  return true;
+}
+function eintrag(e){
+  const meta = [e.art, e.spr, e.dauer, e.jahr].filter(Boolean).map(esc).map(x => "<span>" + x + "</span>").join("");
+  const links = (e.links || []).map(l => '<a class="btn" href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + "</a>").join("");
+  const il = e.ilias ? '<span class="ilias">' + esc(e.ilias) + "</span>" : "";
+  return "<article><div class=\"meta\">" + meta + (e.neu ? '<span class="neu">Neu 2026</span>' : "") + "</div><h3>" + esc(e.titel) +
+         "</h3><p class=\"von\">" + esc(e.von) + "</p><p class=\"txt\">" + esc(e.txt) + "</p><div class=\"links\">" + links + il + "</div></article>";
+}
+function zeichne(){
+  const treffer = E.filter(passt);
+  let html = "";
+  THEMEN.forEach(t => {
+    const g = treffer.filter(e => e.th === t.id);
+    if (!g.length) return;
+    html += '<section class="gruppe" id="' + t.id + '"><div class="shortrule"></div><div class="ghead"><h2>' + esc(t.name) +
+            '</h2><span class="gcount">' + g.length + (g.length === 1 ? " Eintrag" : " Einträge") + '</span></div><p class="glead">' + esc(t.lead) +
+            '</p><div class="entries">' + g.map(eintrag).join("") + "</div></section>";
+  });
+  if (!treffer.length) html = '<div class="leer"><p>Dazu gibt es hier nichts.</p><button class="btn" type="button" id="reset">Filter zurücksetzen</button></div>';
+  $("liste").innerHTML = html;
+  const neu = treffer.filter(e => e.neu).length;
+  $("count").textContent = treffer.length + " von " + E.length + " Einträgen, davon " + neu + " neu";
+  const r = $("reset"); if (r) r.addEventListener("click", () => { $("filter").reset(); zeichne(); });
+}
+["q","art","thema","neu"].forEach(id => { $(id).addEventListener("input", zeichne); $(id).addEventListener("change", zeichne); });
+$("filter").addEventListener("submit", ev => ev.preventDefault());
+zeichne();
+</script>
+
+</body>
+</html>
